@@ -5,7 +5,7 @@
 \usepackage{graphicx}
 \graphicspath{{.}}
 
-\title{401 HW 1}
+\title{401 HW 2}
 \author{James Oswald}
 \date{September 2020}
 
@@ -50,13 +50,13 @@ Following the conversion algorithm, I start by converting the whole part, $50$ t
 
 \paragraph{B)}
 Consider the gaps between representable floating point numbers. Which of the following has the larger gap between it and the next larger representable floating point number? 2 or 201
-
+\paragraph{}
 It should be obvious from the way floating points are stored that 201 has a larger gap than 2 between the next floating point number, since as you gain exponent you loose room for precision in the mantissa which ties in with the fun fact that half of all representable floating point numbers are in the range [-1, 1] and you get less and less precise the further you go out. Just to prove this, I've brute forced the calculations: 
-
+\paragraph{}
 Converting 2 to a float, we get $01000000000000000000000000000000$, the next largest representable float will be $01000000000000000000000000000001$ which is $2.0000002384185791015625$ in decimal. Converting 201 to a 32 bit IEEE 754 float we get $01000011010010010000000000000000$, the next largest representable float will be $01000011010010010000000000000001$ which is $201.0000152587890625$ in decimal. Comparing the distances we get $.0000002384185791015625$ $<\\$ $.0000152587890625$ which proves 201 has a larger gap between it and the next representable number. 
 
 \subsection{Bisection search}
-See attached matlab file hw223.m for implementation.
+I've taken the liberty of not copying questions for coding questions. See attached Matlab file hw223.m for implementation.
 \newline
 Code for all 3 parts:
 \newline
@@ -71,6 +71,44 @@ For part 2, We graph F1 to see that it indeed find the correct root.
 For part 3, we see it found the root at 0, but was stopped by my selection of delta before getting too close.
 
 \subsection{Newton’s method}
-See attached matlab file hw224.m file for implementation 
+
+\paragraph{Part 1}
+See attached Matlab file hw224.m file for implementation.
+\newline
+\includegraphics[scale=0.7]{Homework2/2.4code.png}
+\newpage
+Diary file output for part 1.
+\newline
+\includegraphics{Homework2/2.4diary.png}
+\newline
+I was lucky to be able to test my code out using a sample problem I found online, and get what appears to be a correct result with those parameters.  
+
+\paragraph{Part 2}
+Suppose that you want to find the points at which the graphs of two functions $f(x)$ and $g(x)$
+intersect. Write down a function $H(x)$ such that $f(x)$ and $g(x)$ intersect at a point $z$ if and
+only if $H(z) = 0$.
+\paragraph{}
+The function $H(x) = f(x) - g(x)$ will equal 0 exclusively where $f(x)$ and $g(x)$ intersect. This is because whenever $f(x)$ and $g(x)$ intersect, $f(x) = g(x)$ which implies $f(x) - g(x) = 0$ which is exactly what we need as our condition for $H(x)$.
+
+\paragraph{Part 3}
+Find the point of intersection of $f(x) = x$ and $g(x) = x \log(x)$:
+\begin{itemize}
+  \item Write down a function $H(x)$ as above, such that the roots of $H(x)$ are exactly the points of intersection of $x$ and $x \log(x)$
+  \paragraph{}
+  Using the function from above we get: $H(x) = x - x \log(x)$
+  \item Write down the Newton iteration equation (i.e., $w_{k+1}$ in terms of wk, $H(x)$, and $H'(x)$) that you would use to find roots of $H(x)$.
+  \[w_{k+1} = w_k - \frac{H(w_k)}{H'(w_k)}\]
+  
+  \item Use your Matlab implementation of Newton’s method with $k = 50$ and some appropriate starting point $w_0$ to find an approximation wk to the root $x_*$ of $H(x)$. In order to choose $w_0$, you can plot $H(x)$ and identify a point visually close to $x_*$.
+  \paragraph{}
+  I visually Identified the point 5 as being close to the true root $x_*$ I plugged in with $k=50$ and ran the experiment.
+  \newline
+  \includegraphics[]{Homework2/2.4.3code.png}
+  \newline
+  Which yielded what looks like the correct result
+  \newline
+  \includegraphics[]{Homework2/2.4.3diary.png}
+  \newline
+\end{itemize}
 
 \end{document}
