@@ -53,22 +53,24 @@ Consider the gaps between representable floating point numbers. Which of the fol
 
 It should be obvious from the way floating points are stored that 201 has a larger gap than 2 between the next floating point number, since as you gain exponent you loose room for precision in the mantissa which ties in with the fun fact that half of all representable floating point numbers are in the range [-1, 1] and you get less and less precise the further you go out. Just to prove this, I've brute forced the calculations: 
 
-Converting 2 to a float, we get $01000000000000000000000000000000$, the next largest representable float will be $01000000000000000000000000000001$ which is $2.0000002384185791015625$ in decimal. Converting 201 to a 32 bit IEEE 754 float we get $01000011010010010000000000000000$, the next largest representable float will be $01000011010010010000000000000001$ which is $201.0000152587890625$ in decimal. Comparing the distances we get $.0000002384185791015625 < .0000152587890625$ which proves 201 has a larger gap between it and the next representable number. 
+Converting 2 to a float, we get $01000000000000000000000000000000$, the next largest representable float will be $01000000000000000000000000000001$ which is $2.0000002384185791015625$ in decimal. Converting 201 to a 32 bit IEEE 754 float we get $01000011010010010000000000000000$, the next largest representable float will be $01000011010010010000000000000001$ which is $201.0000152587890625$ in decimal. Comparing the distances we get $.0000002384185791015625$ $<\\$ $.0000152587890625$ which proves 201 has a larger gap between it and the next representable number. 
 
 \subsection{Bisection search}
-See attached matlab file hw223.m for implementation 
-
-Code for all 3 problems:
+See attached matlab file hw223.m for implementation.
 \newline
-\includegraphics[scale=0.5]{Homework2/2.3code.png}
+Code for all 3 parts:
 \newline
-Output For Problems 2 and 3:
+\includegraphics[scale=0.7]{Homework2/2.3code.png}
+\newpage
+Output For part 2 and 3:
 \newline
 \includegraphics{Homework2/2.3diary.png}
 \newline
 
+For part 2, We graph F1 to see that it indeed find the correct root. 
+For part 3, we see it found the root at 0, but was stopped by my selection of delta before getting too close.
 
 \subsection{Newton’s method}
-See attached matlab file for implementation 
+See attached matlab file hw224.m file for implementation 
 
 \end{document}
