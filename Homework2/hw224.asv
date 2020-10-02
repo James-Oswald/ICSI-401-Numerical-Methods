@@ -1,0 +1,11 @@
+
+F1 = @(x) x*x-3
+
+function wk = newtonsMethod(F, Fprime, w0, k)
+    iter = 0;
+    wk = w0;
+    while iter <= k
+        wk = wk - F(wk) / Fprime(wk);
+        iter = iter + 1;
+    end
+end
