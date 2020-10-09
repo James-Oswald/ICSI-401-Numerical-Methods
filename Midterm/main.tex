@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=red,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{float}
+\restylefloat{table}
+%fancy headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ICSI 401 Midterm}
+\rhead{\thepage}
+
+
+\author{James Oswald}
+\title{ICSI 401 Midterm}
+
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{enumerate}
+    \item (10 points) Which of the following is a valid expression for the function $f(x)=e^{x}x - x$ from Taylor’s remainder theorem?
+    \begin{enumerate}
+        \item[A.] $x^2 + \frac{x^3}{2} + (4e^0 + 0e^0)\xi^4/4!$, where $\xi$ is some real number between 0 and x.
+        \item[B.] $x^2 + \frac{x^3}{2} + (4e^0 + 0e^0)x^4/4!$.
+        \item[C.] $x^2 + \frac{x^3}{2} + (4e^\xi + \xi e^\xi)x^4/4!$ where $\xi$ is some real number between 0 and x.
+    \end{enumerate}
+    Hint: I’ve listed some derivatives of $f$: $f'(x) = -1 + xe^x + e^x; f''(x) = 2e^x; f'''(x) = 3e^x + xe^x; f^{(4)}(x)=4e^x+4e^x$
+    \newline
+    \newline
+    Problem 1 work goes here.
+    
+    \item (10 points) The following code is meant to find a root of the input function $F$ inside the interval $[a, b]$.
+    \begin{lstlisting}[language=MATLAB]
+%
+% Implements multisection search to find a root
+% of F in the interval [a, b]. Runs for k iterations.
+%
+function x = multisection_search(F, a, b, k):
+    if (F(a) <= 0 && F(b) > 0)
+        direction = 1
+    elseif (F(a) > 0 && F(b) <= 0)
+        direction = -1
+    end
+    for i = 1:k
+        z = a/10 + 9*b/10
+        if (F(z) == 0)
+            x = z
+            return(x)
+        end
+        if (F(z) * direction < 0)
+            a = z
+        elseif (F(z) * direction > 0)
+            b = z
+        end
+    end
+    x = z
+end
+    \end{lstlisting}
+    Assume infinite precision, and assume that $F$ is a continuous function.
+    \begin{enumerate}
+        \item Is $z$ guaranteed to converge to a root of $F$ in the interval $[a, b]$ if $F(a)$ and $F(b)$ have opposite signs and F is a continuous function? If so, what theorem guarantees this?
+        \newline
+        \newline
+        Problem 2a work goes here.
+        
+        
+        \item What is the maximum possible length of the new interval, in terms of $b − a$, after a single iteration of the $i$ loop?
+        \newline
+        \newline
+        Problem 2b work goes here.
+        
+    \end{enumerate}
+    \item (10 points)
+    \begin{enumerate}
+        \item Derive the Newton update equation (i.e., $x_{k+1}$ in terms of $x_k$) for the function $F(x) = \sin(x)$.
+        \newline
+        \newline
+        Problem 3a work goes here.
+        \item Suppose that you choose an initial point $x_0\in (\pi, 3\pi/2)$ sufficiently close to $\pi$. Can convergence of Newton’s method be guaranteed? Why, or why not?
+        \newline
+        \newline
+        Problem 3b work goes here.
+    \end{enumerate}
+    \item (10 points) Consider finding fixed points of the function $F(x) = 2xe^x + x$.
+    \begin{enumerate}
+        \item For which values of $x$ is $F(x)$ a contraction?
+        \newline
+        \newline
+        Problem 4a work goes here.
+        \item Will fixed point iteration starting with some point $x_0\in [−1/2, 1]$ converge to a fixed point of $F$ in that interval? If so, why? If not, why doesn’t Banach’s fixed point theorem apply?
+        \newline
+        \newline
+        Problem 4b work goes here.
+    \end{enumerate}
+    \item (10 points) Consider the function $F(x) = \cot(x) = \frac{\cos(x)}{\sin(x)}$.
+    \begin{enumerate}
+        \item Derive an expression for the relative condition number $\kappa(x)$ of $F(x)$.
+        \newline
+        \newline
+        Problem 5a work goes here.
+        \item Determine all points $x_* \in \mathbb{R}$ near which $F(x)$ is ill-conditioned, in the sense that $\lim_{x\to x_*} \kappa(x) = \infty$
+        \newline
+        \newline
+        Problem 5b work goes here.
+    \end{enumerate}
+    \item (10 points) If a function $F(x) = \Theta(x^2)$ as $x \to \infty$, is it always true that $3F(x) = \Theta(x^2)$? If so, explain why. If not, give a counterexample.
+    \newline
+    Hint: $F(x) = \Theta(G(x))$ as $x \to \infty$ means that there exist positive constants $C_1$, $C_2$ such that $0 < C_1 \leq \left|\frac{F(x)}{G(x)}\right| < C_2$ for all large enough $x$.
+    \newline
+    \newline
+    Problem 6 work goes here.
+    \item (10 points) Consider a floating point number system with 8 mantissa bits and 8 exponent bits that works as follows: if a number $N$ is$+(1.x_1x_2x_3...x_8)_2\times2^{(y_7y_6y_5...y_0)_2}$, then its floating point representation is given $\fbox{1}\fbox{x_1x_2...x_8}\fbox{y_7y_6...y_0}$ where the first bit represents the positive sign. Note that the initial 1 in the mantissa is not represented explicitly, so we are using a hidden bit representation.
+    \begin{enumerate}
+        \item What is the floating point representation of the number 3.75? Write your answer in binary, clearly giving the mantissa and exponent bit strings.
+        \newline
+        \newline
+        Problem 7a work goes here.
+        \item What is the smallest number larger than 3.75 that is representable in the floating point number system described above? Write your answer in the binary floating point format, clearly giving the mantissa and exponent bit strings.
+        \newline
+        \newline
+        Problem 7b work goes here.
+    \end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}
