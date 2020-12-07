@@ -165,19 +165,136 @@ end
     Complete either table using the corresponding pseudocode for full credit.
     \newline
     \newline
-    I use the pseudocode to calculate the correct values for the table: \newline\newline
+    From the table I see that when $z = 1$ then $y=3$, thus we solve for what x we're calculating with via $y = \text{coef}(1) + x * z$. We plug in and see $3 = 3 + x * 1$, thus it is apparent we are solving for when $x = 0$. With this knowledge we can finish the rest of the table by hand just by going through each iteration. \newline\newline
     \begin{tabular}{ c|c|c } 
-        coefficients & x & y \\ 
+        coefficients & z & y \\ 
         \hline
-        [1, 1, 3, 1] &  &  \\
+        [1, 1, 3, 1] & 1 & 1 \\
         \hline
-        [1, 3, 1] &  & \\ 
+        [1, 3, 1] & 3 & 1\\ 
         \hline
         [3, 1] & 1 & 3 \\
         \hline
         [1] & N/A & 1
     \end{tabular}\newline
+    
+    \newpage
+    \item[6.] (10 points) Power method \newline
+    Consider the following matrix:
+    \[A = \begin{pmatrix}2 & 4 \\ 4 & 3\end{pmatrix}\]
+    Consider the following Matlab code for computing an eigenvector corresponding to the second largest eigenvalue of A.
+    \begin{verbatim}
+A = [2, 4; 4, 3];
+%
+% Code for computing an eigenvector corresponding to the second-largest
+% eigenvector of A.
+%
+x = [1, 0]’;
+first_eigenvector = [0.661802563235740, 0.749678175815866]’;
+% Make x orthogonal to the first eigenvector by subtracting off its projection.
+x = x - x’ * first_eigenvector * first_eigenvector;
+% Apply the power method for 1000 iterations.
+for j = 1:1000
+    % Line B
+    x = A*x;
+    x = x/norm(x); % Line D
+end
+% Line C
+display(x);
+    \end{verbatim}
+    Which of the following modifications of the code will ensure convergence to the correct answer
+    when run on a computer?
+    \begin{enumerate}
+        \item[A.] No modification is needed. It will converge to the correct answer.
+        \item[B.] At the beginning of the for loop (marked with “Line B”), insert the following code:
+        \begin{verbatim}
+        x = x - x’ * first_eigenvector * first_eigenvector;
+        \end{verbatim}
+        \item[C.] After the for loop (marked “Line C”), insert the following code:
+        \begin{verbatim}
+        x = (A’ * A) \ (A’ * x);
+        \end{verbatim}
+        so as to solve the normal equations.
+        \item[D.] Remove the line marked by “Line D”.
+    \end{enumerate}
+    The correct choice is option B. It's literally in the comment that we need to perform that operation to make x orthogonal to the first eigenvector by subtracting off its projection. Without adding that on line B we will get the wrong value.
+    
+    \newpage
+    \item[7.] (10 points) Consider the backward difference approximation for the derivative of a function $f$:
+    \[\hat{f}'(x)=\frac{f(x)-f(x-h)}{h}\]
+    for a small parameter $h > 0$.\newline
+    Ignoring rounding error, what is the absolute error in approximating $f'(x)$ by $\hat{f}'(x)$ expressed in terms of $h$?
+    \begin{enumerate}
+        \item[A.] $|f'(x) - \hat{f}'(x)| = O(h)$ as $h\to0$.
+        \item[B.] $|f'(x) - \hat{f}'(x)| = O(h^2)$ as $h\to0$.
+        \item[C.] $|f'(x) - \hat{f}'(x)| = O(h^3)$ as $h\to0$.
+        \item[D.] $|f'(x) - \hat{f}'(x)| = O(h^{-1})$ as $h\to0$.
+    \end{enumerate}
+    \textbf{Hint:} Use the Taylor series of f centered around x.
+    \newline
+    \newline
+    I start with expanding the definition $|f'(x) - \hat{f}'(x)|$ and then expanding Taylor series for $f(x+h)$ and $f(x-h)$
+    \begin{align*}
+        & |f'(x) - \hat{f}'(x)| \\
+        &= \left|\frac{f(x+h)-f(x)}{h}-\frac{f(x)-f(x-h)}{h}\right| \\
+        &= \left|\frac{f(x+h)+f(x-h)-2f(x)}{h}\right|\\
+        &= \left|\frac{f(x) + hf'(x)+ \frac{1}{2}h^2f''(x)+...+f(x) - hf'(x)+ \frac{1}{2}h^2f''(x)+...-2f(x)}{h}\right|\\
+        &= \left|\frac{h^2f''(x)+...}{h}\right|\\
+        &= \left|hf''(x)+...\right|\\
+        &= O(h) \text{   as   } h\to0
+    \end{align*}
+    Thus the absolute error in approximating $f'(x)$ by $\hat{f}'(x)$ expressed in terms of $h$ is choice A, $O(h)$ as $h\to0$.
+    
+    \newpage
+    \item[8.] (10 points) Suppose that you wish to compute a least-squares fit to the following points using a polynomial $p(x)$ of degree $\leq$ 4: $(x0, y0) = (0, 1),(x1, y1) = (1, 3),(x2, y2) = (2, 4),(x3, y3) = (3, 2),(x4, y4) = (4, 5)$.\newline
+    What is the value of the approximation error of the least-squares degree $\leq$ 4 polynomial for these points (i.e., you need to calculate $\Sigma^4_{j=0}(y_j-p(x_j))^2$).
+    \textbf{Hint: } If you’re doing a lot of calculating for this problem, then you’re probably doing something wrong.
+    \newline
+    \newline
+    Using the least squares fit formula for a line we can solve for $m$ and $c$ uisng the linear system.
+    \[\overset{A}{\begin{bmatrix}0 & 1\\1 & 1\\ 2 & 1 \\3 & 1\\ 4 & 1\end{bmatrix}}\overset{X}{\begin{bmatrix}m \\ c\end{bmatrix}} = \overset{B}{\begin{bmatrix}1\\3\\4\\2\\5\end{bmatrix}}\]
+    To solve for $X$ we compute $(A^TA)^{-1}A^TB$ and arrive at $m=0.7$ and $c=1.6$ and obtain the least-squares degree $\leq$ 4 polynomial for these points $p(x)=0.7x+1.6$. To calculate the approximation error of the least-squares degree $\leq$ 4 polynomial for these points I plug $\Sigma^4_{j=0}(y_j-p(x_j))^2$
+    \begin{align*}
+        & \Sigma^4_{j=0}(y_j-p(x_j))^2 \\
+        &= (y_0-p(x_0))^2 + (y_1-p(x_1))^2 + (y_2-p(x_2))^2 + (y_3-p(x_3))^2 + (y_4-p(x_4))^2 \\
+        &= (1-p(0))^2 + (3-p(1))^2 + (4-p(2))^2 + (2-p(3))^2 + (5-p(4))^2 \\
+        &= (1-1.6)^2 + (3-2.3)^2 + (4-3)^2 + (2-3.7)^2 + (5-4.4)^2 \\
+        &= (0.6)^2 + (0.7)^2 + (1)^2 + (1.7)^2 + (0.6)^2 \\
+        &= 0.36 + 0.49 + 1 + 2.89 + 0.36\\
+        &= 5.1
+    \end{align*}
+    \newpage
+    \item[9.] (10 points) Suppose that we want to approximate $f'(x)$, with $f(x) = sin(x)$ and $x = \pi/3$, so that $f'(x) = 0.5$.\newline
+    We will use the forward difference formula:
+    \[\hat{f}'(x)=\frac{f(x+h)-f(x)}{h}\]
+    Below is a table giving the relative error of the approximation for various values of h, when implemented in Matlab.\newline\newline
+    \begin{tabular}{ c|c } 
+        $h$ & $\left|\frac{f'(x) - \hat{f}'(x)}{f'(x)}\right|$ \\ 
+        \hline
+        10^{-5} & 8.660265948035038e-06\\
+        10^{-6} & 8.660562260676128e-07\\
+        10^{-7} & 8.601352896597801e-08\\
+        10^{-8} & 6.077471192966753e-09\\
+        10^{-9} & 8.274037077704576e-08\\
+        10^{-10} & 8.274037077704576e-08\\
+        10^{-11} & 8.274037077704576e-08\\
+        10^{-12} & 8.890058234078956e-05\\
+        10^{-13} & 7.992778373593354e-04\\
+        10^{-14} & 7.992778373593354e-04\\
+        10^{-15} & 0.110223024625156\\
+    \end{tabular}\newline
+    Notice, in particular, that the relative error decreases until $h \aprox 10^{-8}$, and then it begins to increase as we further decrease h. What is the source of this phenomenon?
+    \begin{enumerate}
+        \item[A.] The Runge phenomenon.
+        \item[B.] Rounding error in the computation of $f(x + h)$ and $f(x)$.
+        \item[C.] A bug in Matlab’s source code.
+        \item[D.] $f$ is not differentiable near $x = \pi/3$.
+    \end{enumerate}
+    \newline
+    \newline
+    The source of this phenomenon is choice B, Rounding error in the computation of $f(x + h)$ and $f(x)$. This is because at scales this small, even if $h$ can still be reasonably encoded with minimal within a floating point number, The result of operations and functions computing with $h$ may not be.   
 \end{enumerate}
+
 
 
 \end{document}
