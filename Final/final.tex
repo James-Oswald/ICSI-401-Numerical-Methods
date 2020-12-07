@@ -251,17 +251,36 @@ display(x);
     \textbf{Hint: } If you’re doing a lot of calculating for this problem, then you’re probably doing something wrong.
     \newline
     \newline
-    Using the least squares fit formula for a line we can solve for $m$ and $c$ uisng the linear system.
-    \[\overset{A}{\begin{bmatrix}0 & 1\\1 & 1\\ 2 & 1 \\3 & 1\\ 4 & 1\end{bmatrix}}\overset{X}{\begin{bmatrix}m \\ c\end{bmatrix}} = \overset{B}{\begin{bmatrix}1\\3\\4\\2\\5\end{bmatrix}}\]
-    To solve for $X$ we compute $(A^TA)^{-1}A^TB$ and arrive at $m=0.7$ and $c=1.6$ and obtain the least-squares degree $\leq$ 4 polynomial for these points $p(x)=0.7x+1.6$. To calculate the approximation error of the least-squares degree $\leq$ 4 polynomial for these points I plug $\Sigma^4_{j=0}(y_j-p(x_j))^2$
+    I begin by computing the degree 4 Vandermonde matrix of the problem
+    \[\begin{bmatrix}
+        1 & 0 & 0 & 0 & 0 \\
+        1 & 1 & 1 & 1 & 1 \\
+        1 & 2 & 4 & 8 & 16 \\
+        1 & 3 & 9 & 27 & 81 \\
+        1 & 4 & 16 & 64 & 256 \\
+    \end{bmatrix}\]
+    From this obtain the coefficient vector using the psudoinverse of the Vandermonde matrix and multiplying it with the $y$ values.
+    \[\begin{bmatrix}
+        1 & 0 & 0 & 0 & 0 \\
+        1 & 1 & 1 & 1 & 1\\
+        1 & 2 & 4 & 8 & 16\\
+        1 & 3 & 9 & 27 & 81\\
+        1 & 4 & 16 & 64 & 256\\
+    \end{bmatrix}^\dagger
+    \begin{bmatrix}
+        1 \\ 3 \\ 4 \\ 2 \\ 5
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        1 \\ -\frac{2}{3} \\ \frac{61}{12} \\ -\frac{17}{6} \\ \frac{5}{12}
+    \end{bmatrix}\]
+    To solve for $p(x)$ I plug the coefficients into a polynomial and get $p(x)=\frac{5}{12}x^4-\frac{17}{6}x^3+\frac{61}{12}x^2-\frac{2}{3}x+1$. To calculate the approximation error I plug into $\Sigma^4_{j=0}(y_j-p(x_j))^2$, however it should be obviously 0 since this polynomial was designed to perfectly fit these points.
     \begin{align*}
         & \Sigma^4_{j=0}(y_j-p(x_j))^2 \\
         &= (y_0-p(x_0))^2 + (y_1-p(x_1))^2 + (y_2-p(x_2))^2 + (y_3-p(x_3))^2 + (y_4-p(x_4))^2 \\
         &= (1-p(0))^2 + (3-p(1))^2 + (4-p(2))^2 + (2-p(3))^2 + (5-p(4))^2 \\
-        &= (1-1.6)^2 + (3-2.3)^2 + (4-3)^2 + (2-3.7)^2 + (5-4.4)^2 \\
-        &= (0.6)^2 + (0.7)^2 + (1)^2 + (1.7)^2 + (0.6)^2 \\
-        &= 0.36 + 0.49 + 1 + 2.89 + 0.36\\
-        &= 5.1
+        &= (1-1)^2 + (3-3)^2 + (4-4)^2 + (2-2)^2 + (5-5)^2 \\
+        &= (0)^2 + (0)^2 + (0)^2 + (0)^2 + (0)^2 \\
+        &= 0
     \end{align*}
     \newpage
     \item[9.] (10 points) Suppose that we want to approximate $f'(x)$, with $f(x) = sin(x)$ and $x = \pi/3$, so that $f'(x) = 0.5$.\newline
